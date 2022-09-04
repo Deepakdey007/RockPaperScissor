@@ -12,6 +12,8 @@
 
 const totalScore = {computerScore : 0, playerScore : 0}
 
+const deal = {Deal : 0};
+
 // ** getComputerChoice randomly selects between `rock` `paper` `scissors` and returns that string **
 // getComputerChoice() 👉 'Rock'
 // getComputerChoice() 👉 'Scissors'
@@ -77,7 +79,10 @@ function showResult(score, playerChoice, computerChoice) {
   }
 
   handsDiv.innerText = `${playerChoice} vs ${computerChoice}`;
-  playerScoreDiv.innerText = `Your Score : ${totalScore['playerScore']}`;
+  playerScoreDiv.innerText = `Your Score : ${totalScore['playerScore']}
+  Computer Score : ${totalScore['computerScore']}
+  
+  `;
 }
 
 // ** Calculate who won and show it on the screen **
@@ -87,7 +92,22 @@ function onClickRPS(playerChoice) {
   console.log({computerChoice});
   const score = getResult(playerChoice, computerChoice);
   console.log({score})
-  totalScore['playerScore'] += score;
+  if(score == 1){
+    totalScore['playerScore'] += score;
+    deal['Deal'] += 1;
+  }
+  else if(score == -1) {
+    totalScore['computerScore'] += score;
+    deal['Deal'] += 1;
+  }
+
+  if(deal['Deal'] >= 3){
+
+    // argument is for best play
+
+    play_best(3); // for win (2/3) , (3/5), (5/9);
+  }
+  
   console.log(totalScore);
   showResult(score, playerChoice, computerChoice);
 
@@ -125,11 +145,42 @@ function endGame(totalScore) {
   const resultDiv = document.getElementById('result')
   const handsDiv = document.getElementById('hands')
   const playerScoreDiv = document.getElementById('player-score')
+  const dealDiv = document.getElementById('deal');
 
   resultDiv.innerText = '';
   handsDiv.innerText = '';
   playerScoreDiv.innerText = '';
+  dealDiv.innerText = '';
 
+}
+
+function play_best(n) {
+  let player_wins = totalScore['playerChoice'];
+  let computer_wins = totalScore['computerChoice'];
+  wins_necessary = Math.ceil(n/2);
+  console.log(wins_necessary);
+  while(player_wins <  wins_necessary && computer_wins < wins_necessary) {
+      result;
+      if(result == 0) {
+          // `It is a tie. You and the compute both chose`;
+      }
+      else if(result == 1) {
+          player_wins += 1;
+          // `You Won!`
+      }
+      else {
+          computer_wins += 1;
+          // `You Lost`
+      }
+  }
+  const dealDiv = document.getElementById('deal');
+
+  if(player_wins > computer_wins) {
+      dealDiv.innerText = `You have won the best of games!`
+  }
+  else {
+      dealDiv.innerText = `The computer Won the best of games. Better Luck Next Time `
+  }
 }
 
 playGame()
